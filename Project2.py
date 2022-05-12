@@ -1,12 +1,16 @@
 import random
+import sys
 import pygame
 import time
-
 pygame.init()
-
 black = (0, 0, 0)
 gray = (119, 118, 110)
 red = (255, 0, 0)
+green = (0, 200, 0)
+blue = (0, 0, 200)
+bright_red = (255, 0, 0)
+bright_green = (0, 255, 0)
+bright_blue = (0, 0, 255)
 display_width = 800
 display_height = 600
 gamedisplays = pygame.display.set_mode((display_width, display_height))
@@ -16,6 +20,137 @@ shipimg = pygame.image.load('FreeShip.png')
 shipwidth = 84
 shipheight = 61
 backgroundpic = pygame.image.load('background.jpg')
+intro_background = pygame.image.load('intro_jpeg.jpg')
+instruction_background = pygame.image.load('instruction_background.jpg')
+
+
+def intro_loop():
+    intro = True
+    while intro:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+                sys.exit()
+        gamedisplays.blit(intro_background, (0, 0))
+        button('START', 150, 520, 100, 50, green, bright_green, 'play')
+        button('QUIT', 550, 520, 100, 50, red, bright_red, 'quit')
+        button('INSTRUCTION', 300, 520, 200, 50, blue, bright_blue, 'intro')
+        pygame.display.update()
+        clock.tick(50)
+
+
+def button(msg, x, y, w, h, ic, ac, action=None):
+    mouse = pygame.mouse.get_pos()
+    click = pygame.mouse.get_pressed()
+    if x+w > mouse[0] > x and y+h > mouse[1] > y:
+        pygame.draw.rect(gamedisplays, ac, (x, y, w, h))
+        if click[0] == 1 and action != None:
+            if action == "play":
+                countdown()
+            elif action == "quit":
+                pygame.quit()
+                quit()
+                sys.exit()
+            elif action == "intro":
+                introduction()
+            elif action == "menu":
+                intro_loop()
+
+    else:
+        pygame.draw.rect(gamedisplays, ic, (x, y, w, h))
+    smalltext = pygame.font.Font("freesansbold.ttf", 20)
+    textsurf, textrect = text_objects(msg, smalltext)
+    textrect.center = ((x+(w/2)), (y+(h/2)))
+    gamedisplays.blit(textsurf, textrect)
+
+
+def introduction():
+    introduction = True
+    while introduction:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+                sys.exit()
+        gamedisplays.blit(instruction_background, (0, 0))
+        largetext = pygame.font.Font('freesansbold.ttf', 80)
+        smalltext = pygame.font.Font('freesansbold.ttf', 20)
+        mediumtext = pygame.font.Font('freesansbold.ttf', 40)
+        textSurf, textRect = text_objects("This is an space game in which you need dodge the asteroids", smalltext)
+        textRect.center = ((350), (200))
+        TextSurf, TextRect = text_objects("INSTRUCTION", largetext)
+        TextRect.center = ((400), (100))
+        gamedisplays.blit(TextSurf, TextRect)
+        gamedisplays.blit(textSurf, textRect)
+        stextSurf, stextRect = text_objects("ARROW LEFT : MOVE LEFT", smalltext)
+        stextRect.center = ((150), (400))
+        utextSurf, utextRect = text_objects("ARROW UP : MOVE UP", smalltext)
+        utextRect.center = ((150), (500))
+        dtextSurf, dtextRect = text_objects("ARROW UP : MOVE DOWN", smalltext)
+        dtextRect.center = ((150), (550))
+        hTextSurf, hTextRect = text_objects("ARROW RIGHT : MOVE RIGHT", smalltext)
+        hTextRect.center = ((150), (450))
+        sTextSurf, sTextRect = text_objects("CONTROLS", mediumtext)
+        sTextRect.center = ((350), (300))
+        gamedisplays.blit(sTextSurf, sTextRect)
+        gamedisplays.blit(utextSurf, utextRect)
+        gamedisplays.blit(dtextSurf, dtextRect)
+        gamedisplays.blit(stextSurf, stextRect)
+        gamedisplays.blit(hTextSurf, hTextRect)
+        button("BACK", 600, 450, 100, 50, blue, bright_blue, "menu")
+        pygame.display.update()
+        clock.tick(30)
+
+
+def countdown_background():
+    x = (display_width * 0.45)
+    y = (display_height * 0.9)
+    gamedisplays.blit(backgroundpic, (0, 0))
+    gamedisplays.blit(shipimg, (x, y))
+
+def countdown():
+    countdown = True
+
+    while countdown:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
+                    sys.exit()
+            gamedisplays.fill(gray)
+            countdown_background()
+            largetext = pygame.font.Font('freesansbold.ttf',115)
+            TextSurf, TextRect = text_objects("3", largetext)
+            TextRect.center = ((display_width/2), (display_height/2))
+            gamedisplays.blit(TextSurf, TextRect)
+            pygame.display.update()
+            clock.tick(1)
+            gamedisplays.fill(gray)
+            countdown_background()
+            largetext = pygame.font.Font('freesansbold.ttf', 115)
+            TextSurf, TextRect = text_objects("2", largetext)
+            TextRect.center = ((display_width/2), (display_height/2))
+            gamedisplays.blit(TextSurf, TextRect)
+            pygame.display.update()
+            clock.tick(1)
+            gamedisplays.fill(gray)
+            countdown_background()
+            largetext = pygame.font.Font('freesansbold.ttf', 115)
+            TextSurf, TextRect = text_objects("1", largetext)
+            TextRect.center = ((display_width/2), (display_height/2))
+            gamedisplays.blit(TextSurf, TextRect)
+            pygame.display.update()
+            clock.tick(1)
+            gamedisplays.fill(gray)
+            countdown_background()
+            largetext = pygame.font.Font('freesansbold.ttf', 115)
+            TextSurf, TextRect = text_objects("GO!!!", largetext)
+            TextRect.center = ((display_width/2), (display_height/2))
+            gamedisplays.blit(TextSurf, TextRect)
+            pygame.display.update()
+            clock.tick(1)
+            game_loop()
 
 def score_system(passed, score):
     font = pygame.font.SysFont(None, 25)
@@ -142,6 +277,7 @@ def game_loop():
                 crash()
         pygame.display.update()
         clock.tick(60)
+intro_loop()
 game_loop()
 pygame.quit()
 quit()
