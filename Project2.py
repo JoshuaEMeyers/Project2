@@ -6,6 +6,7 @@ pygame.init()
 
 black = (0, 0, 0)
 gray = (119, 118, 110)
+red = (255, 0, 0)
 display_width = 800
 display_height = 600
 gamedisplays = pygame.display.set_mode((display_width, display_height))
@@ -16,6 +17,12 @@ shipwidth = 84
 shipheight = 61
 backgroundpic = pygame.image.load('background.jpg')
 
+def score_system(passed, score):
+    font = pygame.font.SysFont(None, 25)
+    text = font.render("Passed " + str(passed), True, gray)
+    scored = font.render("Score " + str(score), True, red)
+    gamedisplays.blit(text, (0, 50))
+    gamedisplays.blit(scored, (0, 30))
 
 def text_objects(text, font):
     textsurface = font.render(text, True, gray)
@@ -67,6 +74,9 @@ def game_loop():
     obs_width = 130
     obs_height = 130
     obs_start_x = random.randrange(0, (display_width - obs_width))
+    passed = 0
+    level = 0
+    score = 0
 
     bumped = False
     while not bumped:
@@ -111,10 +121,21 @@ def game_loop():
         enemy(obs_start_x, obs_start_y, obs)
         obs_start_y += obstacle_speed
         ship(x, y)
+        score_system(passed, score)
         if obs_start_y > display_height:
             obs_start_y = 0 - obs_height
             obs_start_x = random.randrange(0, (display_width - obs_width))
             obs = random.randrange(0, 4)
+            passed = passed + 1
+            score = passed * 10
+            if int(passed) % 10 == 0:
+                level += 1
+                largetext = pygame.font.Font('freesansbold.ttf', 80)
+                textsurf, textrect = text_objects('LEVEL ' + str(level), largetext)
+                textrect.center = ((display_width / 2), (display_height / 2))
+                gamedisplays.blit(textsurf, textrect)
+                pygame.display.update()
+                time.sleep(3)
 
         if y < obs_start_y + obs_height:
             if x > obs_start_x and x < obs_start_x + obs_width or x + shipwidth > obs_start_x and x + shipwidth < obs_start_x + obs_width:
