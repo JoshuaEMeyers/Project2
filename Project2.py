@@ -1,3 +1,7 @@
+# Original Idea: https://www.youtube.com/c/Iknowpython *the Car Game video series
+# Added features: Changed the imgs from cars to spaceships and asteroids.
+#                 Made it possible to move on the y-axis as well
+
 import random
 import sys
 import pygame
