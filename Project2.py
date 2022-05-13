@@ -70,8 +70,8 @@ def button(msg, x, y, w, h, ic, ac, action=None):
 
 
 def introduction():
-    introduction = True
-    while introduction:
+    intro = True
+    while intro:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
