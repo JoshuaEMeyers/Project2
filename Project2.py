@@ -91,7 +91,7 @@ def introduction():
         stextRect.center = (150, 400)
         utextSurf, utextRect = text_objects("ARROW UP : MOVE UP", smalltext)
         utextRect.center = (150, 500)
-        dtextSurf, dtextRect = text_objects("ARROW UP : MOVE DOWN", smalltext)
+        dtextSurf, dtextRect = text_objects("ARROW DOWN : MOVE DOWN", smalltext)
         dtextRect.center = (150, 550)
         hTextSurf, hTextRect = text_objects("ARROW RIGHT : MOVE RIGHT", smalltext)
         hTextRect.center = (150, 450)
